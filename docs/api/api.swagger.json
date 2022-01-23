@@ -173,6 +173,59 @@
           "GuardRailsService"
         ]
       }
+    },
+    "/api/v1/repositories/{repo_id}/scans": {
+      "post": {
+        "operationId": "GuardRailsService_TriggerScanRepository",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/serviceTriggerScanRepositoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "GuardRailsService"
+        ]
+      }
+    },
+    "/api/v1/results": {
+      "get": {
+        "operationId": "GuardRailsService_ListResult",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/serviceListResultResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GuardRailsService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -304,6 +357,9 @@
         }
       }
     },
+    "serviceListResultResponse": {
+      "type": "object"
+    },
     "serviceRemoveRepositoryResponse": {
       "type": "object",
       "properties": {
@@ -330,6 +386,22 @@
           "format": "date-time"
         },
         "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "serviceTriggerScanRepositoryResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/rpcCode"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "queued_at": {
           "type": "string",
           "format": "date-time"
         }

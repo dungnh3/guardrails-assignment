@@ -9,10 +9,10 @@ import (
 )
 
 func (s *Service) CreateRepository(ctx context.Context, request *api.CreateRepositoryRequest) (*api.CreateRepositoryResponse, error) {
-	ctx, cancel := defaultTimeoutContext(ctx)
+	timeoutCtx, cancel := defaultTimeoutContext(ctx)
 	defer cancel()
 
-	sr, err := s.repo.CreateSourceRepository(ctx, model.SourceRepository{
+	sr, err := s.repo.CreateSourceRepository(timeoutCtx, model.SourceRepository{
 		Name:     request.Name,
 		Link:     request.Link,
 		IsActive: true,
@@ -30,7 +30,10 @@ func (s *Service) CreateRepository(ctx context.Context, request *api.CreateRepos
 }
 
 func (s *Service) GetRepositoryById(ctx context.Context, request *api.GetRepositoryByIdRequest) (*api.GetRepositoryByIdResponse, error) {
-	sr, err := s.repo.GetSourceRepositoryById(ctx, request.Id)
+	timeoutCtx, cancel := defaultTimeoutContext(ctx)
+	defer cancel()
+
+	sr, err := s.repo.GetSourceRepositoryById(timeoutCtx, request.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +46,10 @@ func (s *Service) GetRepositoryById(ctx context.Context, request *api.GetReposit
 }
 
 func (s *Service) ListRepository(ctx context.Context, request *api.ListRepositoryRequest) (*api.ListRepositoryResponse, error) {
-	srs, err := s.repo.ListSourceRepository(ctx, request.NextId, int(request.Limit))
+	timeoutCtx, cancel := defaultTimeoutContext(ctx)
+	defer cancel()
+
+	srs, err := s.repo.ListSourceRepository(timeoutCtx, request.NextId, int(request.Limit))
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +73,10 @@ func (s *Service) ListRepository(ctx context.Context, request *api.ListRepositor
 }
 
 func (s *Service) UpdateRepository(ctx context.Context, request *api.UpdateRepositoryRequest) (*api.UpdateRepositoryResponse, error) {
-	sr, err := s.repo.UpdateSourceRepositoryById(ctx, request.Id, request.Name, request.Link)
+	timeoutCtx, cancel := defaultTimeoutContext(ctx)
+	defer cancel()
+
+	sr, err := s.repo.UpdateSourceRepositoryById(timeoutCtx, request.Id, request.Name, request.Link)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +90,10 @@ func (s *Service) UpdateRepository(ctx context.Context, request *api.UpdateRepos
 }
 
 func (s *Service) RemoveRepository(ctx context.Context, request *api.RemoveRepositoryRequest) (*api.RemoveRepositoryResponse, error) {
-	if err := s.repo.RemoveSourceRepository(ctx, request.Id); err != nil {
+	timeoutCtx, cancel := defaultTimeoutContext(ctx)
+	defer cancel()
+
+	if err := s.repo.RemoveSourceRepository(timeoutCtx, request.Id); err != nil {
 		return nil, err
 	}
 	return &api.RemoveRepositoryResponse{

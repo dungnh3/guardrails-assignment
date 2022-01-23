@@ -45,6 +45,8 @@ var (
 	_ = code.Code(0)
 
 	_ = code.Code(0)
+
+	_ = code.Code(0)
 )
 
 // Validate checks the field values on CreateRepositoryRequest with the rules
@@ -1283,6 +1285,456 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = RemoveRepositoryResponseValidationError{}
+
+// Validate checks the field values on TriggerScanRepositoryRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TriggerScanRepositoryRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TriggerScanRepositoryRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TriggerScanRepositoryRequestMultiError, or nil if none found.
+func (m *TriggerScanRepositoryRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TriggerScanRepositoryRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetRepoId() <= 0 {
+		err := TriggerScanRepositoryRequestValidationError{
+			field:  "RepoId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return TriggerScanRepositoryRequestMultiError(errors)
+	}
+	return nil
+}
+
+// TriggerScanRepositoryRequestMultiError is an error wrapping multiple
+// validation errors returned by TriggerScanRepositoryRequest.ValidateAll() if
+// the designated constraints aren't met.
+type TriggerScanRepositoryRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TriggerScanRepositoryRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TriggerScanRepositoryRequestMultiError) AllErrors() []error { return m }
+
+// TriggerScanRepositoryRequestValidationError is the validation error returned
+// by TriggerScanRepositoryRequest.Validate if the designated constraints
+// aren't met.
+type TriggerScanRepositoryRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TriggerScanRepositoryRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TriggerScanRepositoryRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TriggerScanRepositoryRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TriggerScanRepositoryRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TriggerScanRepositoryRequestValidationError) ErrorName() string {
+	return "TriggerScanRepositoryRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TriggerScanRepositoryRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTriggerScanRepositoryRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TriggerScanRepositoryRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TriggerScanRepositoryRequestValidationError{}
+
+// Validate checks the field values on TriggerScanRepositoryResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TriggerScanRepositoryResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TriggerScanRepositoryResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// TriggerScanRepositoryResponseMultiError, or nil if none found.
+func (m *TriggerScanRepositoryResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TriggerScanRepositoryResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Id
+
+	if all {
+		switch v := interface{}(m.GetQueuedAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TriggerScanRepositoryResponseValidationError{
+					field:  "QueuedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TriggerScanRepositoryResponseValidationError{
+					field:  "QueuedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetQueuedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TriggerScanRepositoryResponseValidationError{
+				field:  "QueuedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return TriggerScanRepositoryResponseMultiError(errors)
+	}
+	return nil
+}
+
+// TriggerScanRepositoryResponseMultiError is an error wrapping multiple
+// validation errors returned by TriggerScanRepositoryResponse.ValidateAll()
+// if the designated constraints aren't met.
+type TriggerScanRepositoryResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TriggerScanRepositoryResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TriggerScanRepositoryResponseMultiError) AllErrors() []error { return m }
+
+// TriggerScanRepositoryResponseValidationError is the validation error
+// returned by TriggerScanRepositoryResponse.Validate if the designated
+// constraints aren't met.
+type TriggerScanRepositoryResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TriggerScanRepositoryResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TriggerScanRepositoryResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TriggerScanRepositoryResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TriggerScanRepositoryResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TriggerScanRepositoryResponseValidationError) ErrorName() string {
+	return "TriggerScanRepositoryResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TriggerScanRepositoryResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTriggerScanRepositoryResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TriggerScanRepositoryResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TriggerScanRepositoryResponseValidationError{}
+
+// Validate checks the field values on ListResultRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ListResultRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListResultRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListResultRequestMultiError, or nil if none found.
+func (m *ListResultRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListResultRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ListResultRequestMultiError(errors)
+	}
+	return nil
+}
+
+// ListResultRequestMultiError is an error wrapping multiple validation errors
+// returned by ListResultRequest.ValidateAll() if the designated constraints
+// aren't met.
+type ListResultRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListResultRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListResultRequestMultiError) AllErrors() []error { return m }
+
+// ListResultRequestValidationError is the validation error returned by
+// ListResultRequest.Validate if the designated constraints aren't met.
+type ListResultRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListResultRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListResultRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListResultRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListResultRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListResultRequestValidationError) ErrorName() string {
+	return "ListResultRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListResultRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListResultRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListResultRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListResultRequestValidationError{}
+
+// Validate checks the field values on ListResultResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListResultResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListResultResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListResultResponseMultiError, or nil if none found.
+func (m *ListResultResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListResultResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ListResultResponseMultiError(errors)
+	}
+	return nil
+}
+
+// ListResultResponseMultiError is an error wrapping multiple validation errors
+// returned by ListResultResponse.ValidateAll() if the designated constraints
+// aren't met.
+type ListResultResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListResultResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListResultResponseMultiError) AllErrors() []error { return m }
+
+// ListResultResponseValidationError is the validation error returned by
+// ListResultResponse.Validate if the designated constraints aren't met.
+type ListResultResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListResultResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListResultResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListResultResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListResultResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListResultResponseValidationError) ErrorName() string {
+	return "ListResultResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListResultResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListResultResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListResultResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListResultResponseValidationError{}
 
 // Validate checks the field values on CreateRepositoryResponse_Data with the
 // rules defined in the proto definition for this message. If any rules are

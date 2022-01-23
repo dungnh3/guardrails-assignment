@@ -15,7 +15,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/emptypb"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -569,6 +569,192 @@ func (x *RemoveRepositoryResponse) GetCode() code.Code {
 	return code.Code_OK
 }
 
+type TriggerScanRepositoryRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	RepoId uint32 `protobuf:"varint,1,opt,name=repo_id,proto3" json:"repo_id,omitempty"`
+}
+
+func (x *TriggerScanRepositoryRequest) Reset() {
+	*x = TriggerScanRepositoryRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_api_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TriggerScanRepositoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerScanRepositoryRequest) ProtoMessage() {}
+
+func (x *TriggerScanRepositoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_api_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerScanRepositoryRequest.ProtoReflect.Descriptor instead.
+func (*TriggerScanRepositoryRequest) Descriptor() ([]byte, []int) {
+	return file_api_api_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *TriggerScanRepositoryRequest) GetRepoId() uint32 {
+	if x != nil {
+		return x.RepoId
+	}
+	return 0
+}
+
+type TriggerScanRepositoryResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code     code.Code              `protobuf:"varint,1,opt,name=code,proto3,enum=google.rpc.Code" json:"code,omitempty"`
+	Id       uint32                 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+	QueuedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=queued_at,proto3" json:"queued_at,omitempty"`
+}
+
+func (x *TriggerScanRepositoryResponse) Reset() {
+	*x = TriggerScanRepositoryResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_api_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TriggerScanRepositoryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerScanRepositoryResponse) ProtoMessage() {}
+
+func (x *TriggerScanRepositoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_api_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerScanRepositoryResponse.ProtoReflect.Descriptor instead.
+func (*TriggerScanRepositoryResponse) Descriptor() ([]byte, []int) {
+	return file_api_api_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *TriggerScanRepositoryResponse) GetCode() code.Code {
+	if x != nil {
+		return x.Code
+	}
+	return code.Code_OK
+}
+
+func (x *TriggerScanRepositoryResponse) GetId() uint32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *TriggerScanRepositoryResponse) GetQueuedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.QueuedAt
+	}
+	return nil
+}
+
+type ListResultRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ListResultRequest) Reset() {
+	*x = ListResultRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_api_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListResultRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListResultRequest) ProtoMessage() {}
+
+func (x *ListResultRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_api_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListResultRequest.ProtoReflect.Descriptor instead.
+func (*ListResultRequest) Descriptor() ([]byte, []int) {
+	return file_api_api_proto_rawDescGZIP(), []int{12}
+}
+
+type ListResultResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ListResultResponse) Reset() {
+	*x = ListResultResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_api_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListResultResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListResultResponse) ProtoMessage() {}
+
+func (x *ListResultResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_api_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListResultResponse.ProtoReflect.Descriptor instead.
+func (*ListResultResponse) Descriptor() ([]byte, []int) {
+	return file_api_api_proto_rawDescGZIP(), []int{13}
+}
+
 type CreateRepositoryResponse_Data struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -580,7 +766,7 @@ type CreateRepositoryResponse_Data struct {
 func (x *CreateRepositoryResponse_Data) Reset() {
 	*x = CreateRepositoryResponse_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_api_proto_msgTypes[10]
+		mi := &file_api_api_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -593,7 +779,7 @@ func (x *CreateRepositoryResponse_Data) String() string {
 func (*CreateRepositoryResponse_Data) ProtoMessage() {}
 
 func (x *CreateRepositoryResponse_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_api_api_proto_msgTypes[10]
+	mi := &file_api_api_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -627,7 +813,7 @@ type GetRepositoryByIdResponse_Data struct {
 func (x *GetRepositoryByIdResponse_Data) Reset() {
 	*x = GetRepositoryByIdResponse_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_api_proto_msgTypes[11]
+		mi := &file_api_api_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -640,7 +826,7 @@ func (x *GetRepositoryByIdResponse_Data) String() string {
 func (*GetRepositoryByIdResponse_Data) ProtoMessage() {}
 
 func (x *GetRepositoryByIdResponse_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_api_api_proto_msgTypes[11]
+	mi := &file_api_api_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -674,7 +860,7 @@ type ListRepositoryResponse_Data struct {
 func (x *ListRepositoryResponse_Data) Reset() {
 	*x = ListRepositoryResponse_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_api_proto_msgTypes[12]
+		mi := &file_api_api_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -687,7 +873,7 @@ func (x *ListRepositoryResponse_Data) String() string {
 func (*ListRepositoryResponse_Data) ProtoMessage() {}
 
 func (x *ListRepositoryResponse_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_api_api_proto_msgTypes[12]
+	mi := &file_api_api_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -721,7 +907,7 @@ type UpdateRepositoryResponse_Data struct {
 func (x *UpdateRepositoryResponse_Data) Reset() {
 	*x = UpdateRepositoryResponse_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_api_proto_msgTypes[13]
+		mi := &file_api_api_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -734,7 +920,7 @@ func (x *UpdateRepositoryResponse_Data) String() string {
 func (*UpdateRepositoryResponse_Data) ProtoMessage() {}
 
 func (x *UpdateRepositoryResponse_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_api_api_proto_msgTypes[13]
+	mi := &file_api_api_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -870,7 +1056,23 @@ var file_api_api_proto_rawDesc = []byte{
 	0x69, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x24, 0x0a,
 	0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x10, 0x2e, 0x67, 0x6f,
 	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x72, 0x70, 0x63, 0x2e, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x04, 0x63,
-	0x6f, 0x64, 0x65, 0x32, 0xac, 0x06, 0x0a, 0x11, 0x47, 0x75, 0x61, 0x72, 0x64, 0x52, 0x61, 0x69,
+	0x6f, 0x64, 0x65, 0x22, 0x41, 0x0a, 0x1c, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x53, 0x63,
+	0x61, 0x6e, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x21, 0x0a, 0x07, 0x72, 0x65, 0x70, 0x6f, 0x5f, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0d, 0x42, 0x07, 0xfa, 0x42, 0x04, 0x2a, 0x02, 0x20, 0x00, 0x52, 0x07, 0x72,
+	0x65, 0x70, 0x6f, 0x5f, 0x69, 0x64, 0x22, 0x8f, 0x01, 0x0a, 0x1d, 0x54, 0x72, 0x69, 0x67, 0x67,
+	0x65, 0x72, 0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x24, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x10, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
+	0x72, 0x70, 0x63, 0x2e, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x02, 0x69, 0x64, 0x12, 0x38,
+	0x0a, 0x09, 0x71, 0x75, 0x65, 0x75, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x09, 0x71,
+	0x75, 0x65, 0x75, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x22, 0x13, 0x0a, 0x11, 0x4c, 0x69, 0x73, 0x74,
+	0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x14, 0x0a,
+	0x12, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x32, 0xec, 0x08, 0x0a, 0x11, 0x47, 0x75, 0x61, 0x72, 0x64, 0x52, 0x61, 0x69,
 	0x6c, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x9c, 0x01, 0x0a, 0x10, 0x43, 0x72,
 	0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x12, 0x32,
 	0x2e, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x6f, 0x6c, 0x79, 0x6d, 0x70,
@@ -921,7 +1123,27 @@ var file_api_api_proto_rawDesc = []byte{
 	0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
 	0x21, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1b, 0x2a, 0x19, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31,
 	0x2f, 0x72, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x2f, 0x7b, 0x69,
-	0x64, 0x7d, 0x42, 0xdd, 0x01, 0x0a, 0x1d, 0x63, 0x6f, 0x6d, 0x2e, 0x6f, 0x70, 0x65, 0x72, 0x61,
+	0x64, 0x7d, 0x12, 0xb8, 0x01, 0x0a, 0x15, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x53, 0x63,
+	0x61, 0x6e, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x12, 0x37, 0x2e, 0x6f,
+	0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x6f, 0x6c, 0x79, 0x6d, 0x70, 0x75, 0x73,
+	0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72,
+	0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x38, 0x2e, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x2e, 0x6f, 0x6c, 0x79, 0x6d, 0x70, 0x75, 0x73, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x2e, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x70,
+	0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x2c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x26, 0x22, 0x24, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31,
+	0x2f, 0x72, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x2f, 0x7b, 0x72,
+	0x65, 0x70, 0x6f, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x73, 0x63, 0x61, 0x6e, 0x73, 0x12, 0x82, 0x01,
+	0x0a, 0x0a, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x2c, 0x2e, 0x6f,
+	0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x6f, 0x6c, 0x79, 0x6d, 0x70, 0x75, 0x73,
+	0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73,
+	0x75, 0x6c, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2d, 0x2e, 0x6f, 0x70, 0x65,
+	0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x6f, 0x6c, 0x79, 0x6d, 0x70, 0x75, 0x73, 0x2e, 0x73,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x11, 0x12, 0x0f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x72, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x73, 0x42, 0xdd, 0x01, 0x0a, 0x1d, 0x63, 0x6f, 0x6d, 0x2e, 0x6f, 0x70, 0x65, 0x72, 0x61,
 	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x6f, 0x6c, 0x79, 0x6d, 0x70, 0x75, 0x73, 0x2e, 0x73, 0x65, 0x72,
 	0x76, 0x69, 0x63, 0x65, 0x42, 0x08, 0x41, 0x70, 0x69, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
 	0x5a, 0x2c, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x64, 0x75, 0x6e,
@@ -950,7 +1172,7 @@ func file_api_api_proto_rawDescGZIP() []byte {
 	return file_api_api_proto_rawDescData
 }
 
-var file_api_api_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_api_api_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_api_api_proto_goTypes = []interface{}{
 	(*CreateRepositoryRequest)(nil),        // 0: operation.olympus.service.CreateRepositoryRequest
 	(*CreateRepositoryResponse)(nil),       // 1: operation.olympus.service.CreateRepositoryResponse
@@ -962,42 +1184,53 @@ var file_api_api_proto_goTypes = []interface{}{
 	(*UpdateRepositoryResponse)(nil),       // 7: operation.olympus.service.UpdateRepositoryResponse
 	(*RemoveRepositoryRequest)(nil),        // 8: operation.olympus.service.RemoveRepositoryRequest
 	(*RemoveRepositoryResponse)(nil),       // 9: operation.olympus.service.RemoveRepositoryResponse
-	(*CreateRepositoryResponse_Data)(nil),  // 10: operation.olympus.service.CreateRepositoryResponse.Data
-	(*GetRepositoryByIdResponse_Data)(nil), // 11: operation.olympus.service.GetRepositoryByIdResponse.Data
-	(*ListRepositoryResponse_Data)(nil),    // 12: operation.olympus.service.ListRepositoryResponse.Data
-	(*UpdateRepositoryResponse_Data)(nil),  // 13: operation.olympus.service.UpdateRepositoryResponse.Data
-	(code.Code)(0),                         // 14: google.rpc.Code
-	(*SourceRepository)(nil),               // 15: operation.olympus.service.SourceRepository
+	(*TriggerScanRepositoryRequest)(nil),   // 10: operation.olympus.service.TriggerScanRepositoryRequest
+	(*TriggerScanRepositoryResponse)(nil),  // 11: operation.olympus.service.TriggerScanRepositoryResponse
+	(*ListResultRequest)(nil),              // 12: operation.olympus.service.ListResultRequest
+	(*ListResultResponse)(nil),             // 13: operation.olympus.service.ListResultResponse
+	(*CreateRepositoryResponse_Data)(nil),  // 14: operation.olympus.service.CreateRepositoryResponse.Data
+	(*GetRepositoryByIdResponse_Data)(nil), // 15: operation.olympus.service.GetRepositoryByIdResponse.Data
+	(*ListRepositoryResponse_Data)(nil),    // 16: operation.olympus.service.ListRepositoryResponse.Data
+	(*UpdateRepositoryResponse_Data)(nil),  // 17: operation.olympus.service.UpdateRepositoryResponse.Data
+	(code.Code)(0),                         // 18: google.rpc.Code
+	(*timestamppb.Timestamp)(nil),          // 19: google.protobuf.Timestamp
+	(*SourceRepository)(nil),               // 20: operation.olympus.service.SourceRepository
 }
 var file_api_api_proto_depIdxs = []int32{
-	14, // 0: operation.olympus.service.CreateRepositoryResponse.code:type_name -> google.rpc.Code
-	10, // 1: operation.olympus.service.CreateRepositoryResponse.data:type_name -> operation.olympus.service.CreateRepositoryResponse.Data
-	14, // 2: operation.olympus.service.GetRepositoryByIdResponse.code:type_name -> google.rpc.Code
-	11, // 3: operation.olympus.service.GetRepositoryByIdResponse.data:type_name -> operation.olympus.service.GetRepositoryByIdResponse.Data
-	14, // 4: operation.olympus.service.ListRepositoryResponse.code:type_name -> google.rpc.Code
-	12, // 5: operation.olympus.service.ListRepositoryResponse.data:type_name -> operation.olympus.service.ListRepositoryResponse.Data
-	14, // 6: operation.olympus.service.UpdateRepositoryResponse.code:type_name -> google.rpc.Code
-	13, // 7: operation.olympus.service.UpdateRepositoryResponse.data:type_name -> operation.olympus.service.UpdateRepositoryResponse.Data
-	14, // 8: operation.olympus.service.RemoveRepositoryResponse.code:type_name -> google.rpc.Code
-	15, // 9: operation.olympus.service.CreateRepositoryResponse.Data.source_repository:type_name -> operation.olympus.service.SourceRepository
-	15, // 10: operation.olympus.service.GetRepositoryByIdResponse.Data.source_repository:type_name -> operation.olympus.service.SourceRepository
-	15, // 11: operation.olympus.service.ListRepositoryResponse.Data.source_repositories:type_name -> operation.olympus.service.SourceRepository
-	15, // 12: operation.olympus.service.UpdateRepositoryResponse.Data.source_repository:type_name -> operation.olympus.service.SourceRepository
-	0,  // 13: operation.olympus.service.GuardRailsService.CreateRepository:input_type -> operation.olympus.service.CreateRepositoryRequest
-	2,  // 14: operation.olympus.service.GuardRailsService.GetRepositoryById:input_type -> operation.olympus.service.GetRepositoryByIdRequest
-	4,  // 15: operation.olympus.service.GuardRailsService.ListRepository:input_type -> operation.olympus.service.ListRepositoryRequest
-	6,  // 16: operation.olympus.service.GuardRailsService.UpdateRepository:input_type -> operation.olympus.service.UpdateRepositoryRequest
-	8,  // 17: operation.olympus.service.GuardRailsService.RemoveRepository:input_type -> operation.olympus.service.RemoveRepositoryRequest
-	1,  // 18: operation.olympus.service.GuardRailsService.CreateRepository:output_type -> operation.olympus.service.CreateRepositoryResponse
-	3,  // 19: operation.olympus.service.GuardRailsService.GetRepositoryById:output_type -> operation.olympus.service.GetRepositoryByIdResponse
-	5,  // 20: operation.olympus.service.GuardRailsService.ListRepository:output_type -> operation.olympus.service.ListRepositoryResponse
-	7,  // 21: operation.olympus.service.GuardRailsService.UpdateRepository:output_type -> operation.olympus.service.UpdateRepositoryResponse
-	9,  // 22: operation.olympus.service.GuardRailsService.RemoveRepository:output_type -> operation.olympus.service.RemoveRepositoryResponse
-	18, // [18:23] is the sub-list for method output_type
-	13, // [13:18] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	18, // 0: operation.olympus.service.CreateRepositoryResponse.code:type_name -> google.rpc.Code
+	14, // 1: operation.olympus.service.CreateRepositoryResponse.data:type_name -> operation.olympus.service.CreateRepositoryResponse.Data
+	18, // 2: operation.olympus.service.GetRepositoryByIdResponse.code:type_name -> google.rpc.Code
+	15, // 3: operation.olympus.service.GetRepositoryByIdResponse.data:type_name -> operation.olympus.service.GetRepositoryByIdResponse.Data
+	18, // 4: operation.olympus.service.ListRepositoryResponse.code:type_name -> google.rpc.Code
+	16, // 5: operation.olympus.service.ListRepositoryResponse.data:type_name -> operation.olympus.service.ListRepositoryResponse.Data
+	18, // 6: operation.olympus.service.UpdateRepositoryResponse.code:type_name -> google.rpc.Code
+	17, // 7: operation.olympus.service.UpdateRepositoryResponse.data:type_name -> operation.olympus.service.UpdateRepositoryResponse.Data
+	18, // 8: operation.olympus.service.RemoveRepositoryResponse.code:type_name -> google.rpc.Code
+	18, // 9: operation.olympus.service.TriggerScanRepositoryResponse.code:type_name -> google.rpc.Code
+	19, // 10: operation.olympus.service.TriggerScanRepositoryResponse.queued_at:type_name -> google.protobuf.Timestamp
+	20, // 11: operation.olympus.service.CreateRepositoryResponse.Data.source_repository:type_name -> operation.olympus.service.SourceRepository
+	20, // 12: operation.olympus.service.GetRepositoryByIdResponse.Data.source_repository:type_name -> operation.olympus.service.SourceRepository
+	20, // 13: operation.olympus.service.ListRepositoryResponse.Data.source_repositories:type_name -> operation.olympus.service.SourceRepository
+	20, // 14: operation.olympus.service.UpdateRepositoryResponse.Data.source_repository:type_name -> operation.olympus.service.SourceRepository
+	0,  // 15: operation.olympus.service.GuardRailsService.CreateRepository:input_type -> operation.olympus.service.CreateRepositoryRequest
+	2,  // 16: operation.olympus.service.GuardRailsService.GetRepositoryById:input_type -> operation.olympus.service.GetRepositoryByIdRequest
+	4,  // 17: operation.olympus.service.GuardRailsService.ListRepository:input_type -> operation.olympus.service.ListRepositoryRequest
+	6,  // 18: operation.olympus.service.GuardRailsService.UpdateRepository:input_type -> operation.olympus.service.UpdateRepositoryRequest
+	8,  // 19: operation.olympus.service.GuardRailsService.RemoveRepository:input_type -> operation.olympus.service.RemoveRepositoryRequest
+	10, // 20: operation.olympus.service.GuardRailsService.TriggerScanRepository:input_type -> operation.olympus.service.TriggerScanRepositoryRequest
+	12, // 21: operation.olympus.service.GuardRailsService.ListResult:input_type -> operation.olympus.service.ListResultRequest
+	1,  // 22: operation.olympus.service.GuardRailsService.CreateRepository:output_type -> operation.olympus.service.CreateRepositoryResponse
+	3,  // 23: operation.olympus.service.GuardRailsService.GetRepositoryById:output_type -> operation.olympus.service.GetRepositoryByIdResponse
+	5,  // 24: operation.olympus.service.GuardRailsService.ListRepository:output_type -> operation.olympus.service.ListRepositoryResponse
+	7,  // 25: operation.olympus.service.GuardRailsService.UpdateRepository:output_type -> operation.olympus.service.UpdateRepositoryResponse
+	9,  // 26: operation.olympus.service.GuardRailsService.RemoveRepository:output_type -> operation.olympus.service.RemoveRepositoryResponse
+	11, // 27: operation.olympus.service.GuardRailsService.TriggerScanRepository:output_type -> operation.olympus.service.TriggerScanRepositoryResponse
+	13, // 28: operation.olympus.service.GuardRailsService.ListResult:output_type -> operation.olympus.service.ListResultResponse
+	22, // [22:29] is the sub-list for method output_type
+	15, // [15:22] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_api_api_proto_init() }
@@ -1128,7 +1361,7 @@ func file_api_api_proto_init() {
 			}
 		}
 		file_api_api_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateRepositoryResponse_Data); i {
+			switch v := v.(*TriggerScanRepositoryRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1140,7 +1373,7 @@ func file_api_api_proto_init() {
 			}
 		}
 		file_api_api_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRepositoryByIdResponse_Data); i {
+			switch v := v.(*TriggerScanRepositoryResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1152,7 +1385,7 @@ func file_api_api_proto_init() {
 			}
 		}
 		file_api_api_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRepositoryResponse_Data); i {
+			switch v := v.(*ListResultRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1164,6 +1397,54 @@ func file_api_api_proto_init() {
 			}
 		}
 		file_api_api_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListResultResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_api_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateRepositoryResponse_Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_api_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetRepositoryByIdResponse_Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_api_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListRepositoryResponse_Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_api_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateRepositoryResponse_Data); i {
 			case 0:
 				return &v.state
@@ -1182,7 +1463,7 @@ func file_api_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_api_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

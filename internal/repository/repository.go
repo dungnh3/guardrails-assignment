@@ -9,11 +9,13 @@ import (
 )
 
 type IRepository interface {
+	Transaction(txFunc func(IRepository) error) error
 	CreateSourceRepository(ctx context.Context, sr model.SourceRepository) (*model.SourceRepository, error)
 	UpdateSourceRepositoryById(ctx context.Context, id uint32, name, link string) (*model.SourceRepository, error)
 	GetSourceRepositoryById(ctx context.Context, id uint32) (*model.SourceRepository, error)
 	ListSourceRepository(ctx context.Context, nextId uint32, limit int) ([]model.SourceRepository, error)
 	RemoveSourceRepository(ctx context.Context, id uint32) error
+	TriggerScanRepository(ctx context.Context, result model.Result) (*model.Result, error)
 }
 
 type Repository struct {

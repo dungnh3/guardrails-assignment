@@ -5,20 +5,20 @@ import "time"
 type ScanningStatus string
 
 const (
-	QueuedStatus     ScanningStatus = "Queued"
-	InProgressStatus                = "InProgress"
-	SuccessStatus                   = "Success"
-	FailureStatus                   = "Failure"
+	QueuedStatus     ScanningStatus = "queued"
+	InProgressStatus                = "in_progress"
+	SuccessStatus                   = "success"
+	FailureStatus                   = "failure"
 )
 
 type Result struct {
-	ID             uint32
-	RepositoryID   uint32
-	RepositoryName string
-	RepositoryUrl  string
-	Status         ScanningStatus
-	Findings       JSON
-	QueuedAt       time.Time
-	ScanningAt     *time.Time
-	FinishedAt     *time.Time
+	ID                 uint32
+	SourceRepositoryID uint32
+	Name               string
+	Link               string
+	Status             ScanningStatus
+	Findings           JSON
+	QueuedAt           time.Time
+	ScanningAt         *time.Time
+	FinishedAt         *time.Time
 }

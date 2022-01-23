@@ -14,7 +14,7 @@ import "api/data.proto";
 service GuardRailsService {
   rpc CreateRepository(CreateRepositoryRequest) returns (CreateRepositoryResponse) {
     option (google.api.http) = {
-      post: "/api/v1/repositories"
+      post: "/api/v1/repositories",
       body: "*",
     };
   }
@@ -33,7 +33,7 @@ service GuardRailsService {
 
   rpc UpdateRepository(UpdateRepositoryRequest) returns (UpdateRepositoryResponse) {
     option (google.api.http) = {
-      put: "/api/v1/repositories"
+      put: "/api/v1/repositories",
       body: "*",
     };
   }
@@ -41,6 +41,18 @@ service GuardRailsService {
   rpc RemoveRepository(RemoveRepositoryRequest) returns (RemoveRepositoryResponse) {
     option (google.api.http) = {
       delete: "/api/v1/repositories/{id}"
+    };
+  }
+
+  rpc TriggerScanRepository(TriggerScanRepositoryRequest) returns (TriggerScanRepositoryResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/repositories/{repo_id}/scans",
+    };
+  }
+
+  rpc ListResult(ListResultRequest) returns (ListResultResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/results"
     };
   }
 }
@@ -104,4 +116,22 @@ message RemoveRepositoryRequest{
 
 message RemoveRepositoryResponse {
   google.rpc.Code code = 1 [json_name = "code"];
+}
+
+message TriggerScanRepositoryRequest {
+  uint32 repo_id = 1 [json_name = "repo_id", (validate.rules).uint32 = {gt: 0}];
+}
+
+message TriggerScanRepositoryResponse {
+  google.rpc.Code code = 1 [json_name = "code"];
+  uint32 id = 2 [json_name = "id"];
+  google.protobuf.Timestamp queued_at = 3 [json_name = "queued_at"];
+}
+
+message ListResultRequest {
+
+}
+
+message ListResultResponse {
+
 }

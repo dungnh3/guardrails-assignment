@@ -23,6 +23,8 @@ type GuardRailsServiceClient interface {
 	ListRepository(ctx context.Context, in *ListRepositoryRequest, opts ...grpc.CallOption) (*ListRepositoryResponse, error)
 	UpdateRepository(ctx context.Context, in *UpdateRepositoryRequest, opts ...grpc.CallOption) (*UpdateRepositoryResponse, error)
 	RemoveRepository(ctx context.Context, in *RemoveRepositoryRequest, opts ...grpc.CallOption) (*RemoveRepositoryResponse, error)
+	TriggerScanRepository(ctx context.Context, in *TriggerScanRepositoryRequest, opts ...grpc.CallOption) (*TriggerScanRepositoryResponse, error)
+	ListResult(ctx context.Context, in *ListResultRequest, opts ...grpc.CallOption) (*ListResultResponse, error)
 }
 
 type guardRailsServiceClient struct {
@@ -78,6 +80,24 @@ func (c *guardRailsServiceClient) RemoveRepository(ctx context.Context, in *Remo
 	return out, nil
 }
 
+func (c *guardRailsServiceClient) TriggerScanRepository(ctx context.Context, in *TriggerScanRepositoryRequest, opts ...grpc.CallOption) (*TriggerScanRepositoryResponse, error) {
+	out := new(TriggerScanRepositoryResponse)
+	err := c.cc.Invoke(ctx, "/operation.olympus.service.GuardRailsService/TriggerScanRepository", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardRailsServiceClient) ListResult(ctx context.Context, in *ListResultRequest, opts ...grpc.CallOption) (*ListResultResponse, error) {
+	out := new(ListResultResponse)
+	err := c.cc.Invoke(ctx, "/operation.olympus.service.GuardRailsService/ListResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GuardRailsServiceServer is the server API for GuardRailsService service.
 // All implementations should embed UnimplementedGuardRailsServiceServer
 // for forward compatibility
@@ -87,6 +107,8 @@ type GuardRailsServiceServer interface {
 	ListRepository(context.Context, *ListRepositoryRequest) (*ListRepositoryResponse, error)
 	UpdateRepository(context.Context, *UpdateRepositoryRequest) (*UpdateRepositoryResponse, error)
 	RemoveRepository(context.Context, *RemoveRepositoryRequest) (*RemoveRepositoryResponse, error)
+	TriggerScanRepository(context.Context, *TriggerScanRepositoryRequest) (*TriggerScanRepositoryResponse, error)
+	ListResult(context.Context, *ListResultRequest) (*ListResultResponse, error)
 }
 
 // UnimplementedGuardRailsServiceServer should be embedded to have forward compatible implementations.
@@ -107,6 +129,12 @@ func (UnimplementedGuardRailsServiceServer) UpdateRepository(context.Context, *U
 }
 func (UnimplementedGuardRailsServiceServer) RemoveRepository(context.Context, *RemoveRepositoryRequest) (*RemoveRepositoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveRepository not implemented")
+}
+func (UnimplementedGuardRailsServiceServer) TriggerScanRepository(context.Context, *TriggerScanRepositoryRequest) (*TriggerScanRepositoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TriggerScanRepository not implemented")
+}
+func (UnimplementedGuardRailsServiceServer) ListResult(context.Context, *ListResultRequest) (*ListResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListResult not implemented")
 }
 
 // UnsafeGuardRailsServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -210,6 +238,42 @@ func _GuardRailsService_RemoveRepository_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GuardRailsService_TriggerScanRepository_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TriggerScanRepositoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardRailsServiceServer).TriggerScanRepository(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/operation.olympus.service.GuardRailsService/TriggerScanRepository",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardRailsServiceServer).TriggerScanRepository(ctx, req.(*TriggerScanRepositoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardRailsService_ListResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListResultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardRailsServiceServer).ListResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/operation.olympus.service.GuardRailsService/ListResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardRailsServiceServer).ListResult(ctx, req.(*ListResultRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GuardRailsService_ServiceDesc is the grpc.ServiceDesc for GuardRailsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -236,6 +300,14 @@ var GuardRailsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveRepository",
 			Handler:    _GuardRailsService_RemoveRepository_Handler,
+		},
+		{
+			MethodName: "TriggerScanRepository",
+			Handler:    _GuardRailsService_TriggerScanRepository_Handler,
+		},
+		{
+			MethodName: "ListResult",
+			Handler:    _GuardRailsService_ListResult_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

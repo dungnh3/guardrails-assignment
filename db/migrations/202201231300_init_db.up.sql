@@ -34,6 +34,8 @@ CREATE TABLE results
 
 CREATE INDEX results_status_idx on results (status);
 
+CREATE UNIQUE INDEX results_source_repository_id_uidx on results (source_repository_id);
+
 ALTER TABLE results
     ADD CONSTRAINT results_source_repository_id_fkey FOREIGN KEY (source_repository_id) REFERENCES source_repositories (id);
 

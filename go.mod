@@ -48,6 +48,8 @@ require (
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/common v0.10.0 // indirect
 	github.com/prometheus/procfs v0.6.0 // indirect
+	github.com/speedata/gogit v0.0.0-20200902101747-c5cbd8f9b720 // indirect
+	github.com/speedata/mmap-go v0.0.0-20141021215358-6c75090c5598 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
