@@ -1,0 +1,25 @@
+syntax = "proto3";
+package ims.health.service;
+option go_package = "github.com/tikivn/ims-olympus/library/grpc/health";
+
+import "google/api/annotations.proto";
+import "google/rpc/code.proto";
+
+// HeathCheckService provide health check RPC and endpoint to check service status
+service HealthCheckService {
+  // Readiness handle ready service check health
+  rpc Readiness(ReadinessRequest) returns (ReadinessResponse) {
+    option (google.api.http) = {
+      get: "/health/ready"
+    };
+  }
+}
+
+// ReadinessResponse ...
+message ReadinessRequest {}
+
+// ReadinessResponse
+message ReadinessResponse {
+  google.rpc.Code code = 1 [json_name = "code"];
+  string content = 2 [json_name = "content"];
+}

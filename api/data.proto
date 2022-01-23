@@ -1,0 +1,12 @@
+syntax = "proto3";
+package operation.olympus.service;
+
+import "google/protobuf/timestamp.proto";
+
+message SourceRepository {
+  uint32 id = 1 [json_name = "id"];
+  string name = 2 [json_name = "name"];
+  string link = 3 [json_name = "link"];
+  google.protobuf.Timestamp created_at = 4 [json_name = "created_at"];
+  google.protobuf.Timestamp updated_at = 5 [json_name = "updated_at"];
+}

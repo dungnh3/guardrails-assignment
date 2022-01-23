@@ -1,0 +1,107 @@
+syntax = "proto3";
+package operation.olympus.service;
+
+import "google/api/annotations.proto";
+import "google/api/http.proto";
+import "google/api/httpbody.proto";
+import "google/rpc/code.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "api/data.proto";
+
+service GuardRailsService {
+  rpc CreateRepository(CreateRepositoryRequest) returns (CreateRepositoryResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/repositories"
+      body: "*",
+    };
+  }
+
+  rpc GetRepositoryById(GetRepositoryByIdRequest) returns (GetRepositoryByIdResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/repositories/{id}"
+    };
+  }
+
+  rpc ListRepository(ListRepositoryRequest) returns (ListRepositoryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/repositories"
+    };
+  }
+
+  rpc UpdateRepository(UpdateRepositoryRequest) returns (UpdateRepositoryResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/repositories"
+      body: "*",
+    };
+  }
+
+  rpc RemoveRepository(RemoveRepositoryRequest) returns (RemoveRepositoryResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/repositories/{id}"
+    };
+  }
+}
+
+message CreateRepositoryRequest {
+  string name = 1 [json_name = "code", (validate.rules).string = {min_len: 1, max_len: 64}];
+  string link = 2 [json_name = "link", (validate.rules).string = {min_len: 1}];
+}
+
+message CreateRepositoryResponse {
+  message Data {
+    SourceRepository source_repository = 1 [json_name = "source_repository"];
+  }
+  google.rpc.Code code = 1 [json_name = "code"];
+  Data data = 2 [json_name = "data"];
+}
+
+message GetRepositoryByIdRequest {
+  uint32 id = 1 [json_name = "id", (validate.rules).uint32 = {gt: 0}];
+}
+
+message GetRepositoryByIdResponse {
+  message Data {
+    SourceRepository source_repository = 1 [json_name = "source_repository"];
+  }
+  google.rpc.Code code = 1 [json_name = "code"];
+  Data data = 2 [json_name = "data"];
+}
+
+message ListRepositoryRequest {
+  uint32 next_id = 1 [json_name = "next_id", (validate.rules).uint32 = {gte: 0}];
+  uint32 limit = 2 [json_name = "limit", (validate.rules).uint32 = {gt: 0, lte: 100}];
+}
+
+message ListRepositoryResponse {
+  message Data {
+    repeated SourceRepository source_repositories = 1 [json_name = "source_repositories"];
+  }
+  google.rpc.Code code = 1 [json_name = "code"];
+  uint32 next_id = 2 [json_name = "next_id"];
+  Data data = 3 [json_name = "data"];
+}
+
+message UpdateRepositoryRequest {
+  uint32 id = 1 [json_name = "id", (validate.rules).uint32 = {gt: 0}];
+  string name = 2 [json_name = "name", (validate.rules).string = {min_len: 1, max_len: 64}];
+  string link = 3 [json_name = "link", (validate.rules).string = {min_len: 1}];
+}
+
+message UpdateRepositoryResponse {
+  message Data {
+    SourceRepository source_repository = 1 [json_name = "source_repository"];
+  }
+  google.rpc.Code code = 1 [json_name = "code"];
+  Data data = 2 [json_name = "data"];
+}
+
+message RemoveRepositoryRequest{
+  uint32 id = 1 [json_name = "id", (validate.rules).uint32 = {gt: 0}];
+}
+
+message RemoveRepositoryResponse {
+  google.rpc.Code code = 1 [json_name = "code"];
+}

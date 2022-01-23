@@ -1,0 +1,7 @@
+BEGIN;
+
+DROP TYPE IF EXISTS result_status_enum CASCADE;
+DROP TABLE IF EXISTS source_repositories CASCADE;
+DROP TABLE IF EXISTS competitors CASCADE;
+
+COMMIT;
