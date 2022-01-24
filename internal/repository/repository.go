@@ -16,8 +16,9 @@ type IRepository interface {
 	ListSourceRepository(ctx context.Context, nextId uint32, limit int) ([]model.SourceRepository, error)
 	RemoveSourceRepository(ctx context.Context, id uint32) error
 	TriggerScanRepository(ctx context.Context, result model.Result) (*model.Result, error)
-	GetTriggerRepository(ctx context.Context) ([]model.Result, error)
-	UpdateFindingsResultSuccess(ctx context.Context, id uint32, findings []model.Finding) error
+	GetQueuedTriggerRepository(ctx context.Context, limit int) ([]model.Result, error)
+	UpdateFindingsResultSuccess(ctx context.Context, id uint32) error
+	UpdateFindingsResultFailure(ctx context.Context, id uint32, findings []model.Finding) error
 	ListResult(ctx context.Context, nextId uint32, limit int) ([]model.Result, error)
 }
 

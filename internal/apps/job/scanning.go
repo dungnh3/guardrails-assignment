@@ -3,12 +3,11 @@ package job
 import (
 	"bufio"
 	"context"
+	"fmt"
 	"io/fs"
-	"log"
-	"net/url"
 	"os"
-	"path"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/dungnh3/guardrails-assignment/internal/apps/rule"
@@ -18,11 +17,14 @@ import (
 	"github.com/dungnh3/guardrails-assignment/internal/repository"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-logr/logr"
-	"github.com/speedata/gogit"
 	"gorm.io/gorm"
 )
 
 const interval = 100 * time.Millisecond
+
+const gitSkipDir = ".git"
+
+const processBatch = 10
 
 type ScanningEngine struct {
 	logger logr.Logger
@@ -62,91 +64,56 @@ func (s *ScanningEngine) Run(ctx context.Context) error {
 }
 
 func (s *ScanningEngine) Close(ctx context.Context) error {
-	// TODO implement me
-	panic("implement me")
+	return nil
 }
 
-func walk(dirname string, te *gogit.TreeEntry) int {
-	log.Println(path.Join(dirname, te.Name))
-	return 0
-}
-
-func (s *ScanningEngine) cloneRepository(link string) error {
+func (s *ScanningEngine) process(ctx context.Context) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		return err
 	}
 
-	url, err := url.Parse(link)
-	if err != nil {
+	results, err := s.repo.GetQueuedTriggerRepository(ctx, processBatch)
+	if err != nil && err != repository.ErrRecordNotFound {
 		return err
 	}
-	filePath := filepath.Join(wd, "tmp", path.Base(url.Path))
-	_, err = git.PlainClone(filePath, false, &git.CloneOptions{
-		URL:      "link",
-		Progress: os.Stdout,
-	})
-	if err != nil {
-		return err
-	}
-	return nil
-}
+	s.logger.Info(fmt.Sprintf("process scan repositories [%v]", len(results)))
 
-func (s *ScanningEngine) process(ctx context.Context) error {
-	var err error
-	//wd, err := os.Getwd()
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//url, err := url.Parse("https://github.com/dungnh3/buf-demo")
-	//if err != nil {
-	//	return err
-	//}
-	//filePath := filepath.Join(wd, "tmp", path.Base(url.Path))
-	//gitRepo, err := git.PlainClone(filePath, false, &git.CloneOptions{
-	//	URL:      "https://github.com/dungnh3/buf-demo",
-	//	Progress: os.Stdout,
-	//})
-	//if err != nil {
-	//	return err
-	//}
+	for _, result := range results {
+		findings, err := s.scan(wd, result)
+		if err != nil {
+			return err
+		}
 
-	//commits, err := gitRepo.CommitObjects()
-	//if err != nil {
-	//	s.logger.Error(err, "scan error")
-	//	return err
-	//}
-	//defer commits.Close()
-	//
-	//latestCommit, err := commits.Next()
-	//if err != nil {
-	//	return err
-	//}
-	//fileIter, err := latestCommit.Files()
-	//if err != nil {
-	//	return err
-	//}
-	//defer fileIter.Close()
-
-	findings, err := s.scan("./tmp/buf-demo")
-	if err != nil {
-		return err
-	}
-
-	if err = s.repo.UpdateFindingsResultSuccess(ctx, 4, findings); err != nil {
-		return err
+		if len(findings) > 0 {
+			if err = s.repo.UpdateFindingsResultFailure(ctx, result.ID, findings); err != nil {
+				return err
+			}
+		} else {
+			if err = s.repo.UpdateFindingsResultSuccess(ctx, result.ID); err != nil {
+				return err
+			}
+		}
 	}
 	return nil
 }
 
-func (s *ScanningEngine) scan(pathRoot string) ([]model.Finding, error) {
+func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, error) {
+	filePath := filepath.Join(wd, "tmp", result.Name)
+	if err := s.cloneRepository(filePath, result.Link); err != nil {
+		return nil, err
+	}
+	defer func() {
+		os.RemoveAll(filePath)
+	}()
+
 	var findings []model.Finding
+	pathRoot := filepath.Join("tmp", result.Name)
 	if err := filepath.Walk(pathRoot, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() && info.Name() == ".git" {
+		if info.IsDir() && info.Name() == gitSkipDir {
 			return filepath.SkipDir
 		}
 
@@ -168,7 +135,7 @@ func (s *ScanningEngine) scan(pathRoot string) ([]model.Finding, error) {
 				if ok {
 					findings = append(findings, model.Finding{
 						Location: model.Location{
-							Path: path,
+							Path: strings.Replace(path, pathRoot, "", 1),
 							Positions: model.Positions{
 								Begin: model.Begin{
 									Line: counter,
@@ -184,4 +151,14 @@ func (s *ScanningEngine) scan(pathRoot string) ([]model.Finding, error) {
 		return nil, err
 	}
 	return findings, nil
+}
+
+func (s *ScanningEngine) cloneRepository(filePath, url string) error {
+	if _, err := git.PlainClone(filePath, false, &git.CloneOptions{
+		URL:      url,
+		Progress: os.Stdout,
+	}); err != nil {
+		return err
+	}
+	return nil
 }
