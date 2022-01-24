@@ -10,7 +10,10 @@ import (
 )
 
 func (s *Service) TriggerScanRepository(ctx context.Context, request *api.TriggerScanRepositoryRequest) (*api.TriggerScanRepositoryResponse, error) {
-	repo, err := s.repo.GetSourceRepositoryById(ctx, request.RepoId)
+	timeoutCtx, cancel := defaultTimeoutContext(ctx)
+	defer cancel()
+
+	repo, err := s.repo.GetSourceRepositoryById(timeoutCtx, request.RepoId)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +25,7 @@ func (s *Service) TriggerScanRepository(ctx context.Context, request *api.Trigge
 		Status:             model.QueuedStatus,
 		QueuedAt:           time.Now(),
 	}
-	result, err := s.repo.TriggerScanRepository(ctx, r)
+	result, err := s.repo.TriggerScanRepository(timeoutCtx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +37,10 @@ func (s *Service) TriggerScanRepository(ctx context.Context, request *api.Trigge
 }
 
 func (s *Service) ListResult(ctx context.Context, request *api.ListResultRequest) (*api.ListResultResponse, error) {
-	rs, err := s.repo.ListResult(ctx, request.NextId, int(request.Limit))
+	timeoutCtx, cancel := defaultTimeoutContext(ctx)
+	defer cancel()
+
+	rs, err := s.repo.ListResult(timeoutCtx, request.NextId, int(request.Limit))
 	if err != nil {
 		return nil, err
 	}
