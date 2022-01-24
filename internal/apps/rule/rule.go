@@ -1,8 +1,6 @@
 package rule
 
-type IChecked interface {
-	Detect(line string) (bool, error)
-}
+type DetectFn func(line string) (bool, error)
 
 type Severity string
 
@@ -12,23 +10,18 @@ const (
 	MediumSeverity Severity = "MEDIUM"
 )
 
-type RuleType string
+type Type string
 
 const (
-	SASTRuleType RuleType = "sast"
-)
-
-type RuleId string
-
-const (
-	G101RuleId RuleId = "G101"
+	SASTRuleType Type = "sast"
 )
 
 type (
 	Rule struct {
-		Type     RuleType `json:"type"`
-		RuleId   RuleId   `json:"rule_id"`
+		Type     Type     `json:"type"`
+		RuleId   string   `json:"rule_id"`
 		Metadata Metadata `json:"metadata"`
+		DetectFn DetectFn
 	}
 
 	Metadata struct {

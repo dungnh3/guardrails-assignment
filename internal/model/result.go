@@ -42,7 +42,9 @@ type (
 	}
 
 	Finding struct {
-		*rule.Rule
-		Location Location `json:"location"`
+		Type     rule.Type     `json:"type"`
+		RuleId   string        `json:"rule_id"`
+		Metadata rule.Metadata `json:"metadata"`
+		Location Location      `json:"location"`
 	}
 )

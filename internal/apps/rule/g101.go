@@ -6,24 +6,17 @@ import (
 
 var PrefixMatchedG101 = []string{"public_key", "private_key"}
 
-type G101Rule struct {
-	*Rule
+var G101 = Rule{
+	Type:   SASTRuleType,
+	RuleId: "G101",
+	Metadata: Metadata{
+		Description: "Look for hard coded credentials",
+		Severity:    HighSeverity,
+	},
+	DetectFn: DetectG101,
 }
 
-func G101() *G101Rule {
-	return &G101Rule{
-		&Rule{
-			Type:   SASTRuleType,
-			RuleId: G101RuleId,
-			Metadata: Metadata{
-				Description: "Look for hard coded credentials",
-				Severity:    HighSeverity,
-			},
-		},
-	}
-}
-
-func (g *G101Rule) Detect(line string) (bool, error) {
+func DetectG101(line string) (bool, error) {
 	for _, prefix := range PrefixMatchedG101 {
 		matched, err := regexp.MatchString(prefix, line)
 		if err != nil {

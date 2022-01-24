@@ -29,8 +29,8 @@ func scanningCmd() *cobra.Command {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 
-			rules := []rule.IChecked{rule.G101()}
-			scanningEngine := job.NewScanning(logger, db, rules)
+			rules := []rule.Rule{rule.G101}
+			scanningEngine := job.NewScanning(logger, db, rules...)
 
 			// need this chan to catch error in another routine
 			errChan := make(chan error)

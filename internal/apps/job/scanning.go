@@ -31,10 +31,10 @@ const processBatch = 10
 type ScanningEngine struct {
 	logger logr.Logger
 	repo   repository.IRepository
-	rules  []rule.IChecked
+	rules  []rule.Rule
 }
 
-func NewScanning(logger logr.Logger, db *gorm.DB, rules []rule.IChecked) *ScanningEngine {
+func NewScanning(logger logr.Logger, db *gorm.DB, rules ...rule.Rule) *ScanningEngine {
 	logger = logger.WithName("guardrails-scanning-jobs")
 	repo := repository.New(db, logger)
 	return &ScanningEngine{
@@ -135,12 +135,15 @@ func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, 
 		for scanner.Scan() {
 			counter++
 			for _, r := range s.rules {
-				ok, err := r.Detect(scanner.Text())
+				ok, err := r.DetectFn(scanner.Text())
 				if err != nil {
 					return err
 				}
 				if ok {
 					findings = append(findings, model.Finding{
+						Type:     r.Type,
+						RuleId:   r.RuleId,
+						Metadata: r.Metadata,
 						Location: model.Location{
 							Path: strings.Replace(path, pathRoot, "", 1),
 							Positions: model.Positions{
