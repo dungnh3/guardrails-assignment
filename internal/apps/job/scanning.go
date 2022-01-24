@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/dungnh3/guardrails-assignment/internal/apps/rule"
 
 	"github.com/dungnh3/guardrails-assignment/internal/model"
@@ -87,11 +89,13 @@ func (s *ScanningEngine) process(ctx context.Context) error {
 
 		if len(findings) > 0 {
 			if err = s.repo.UpdateFindingsResultFailure(ctx, result.ID, findings); err != nil {
-				return err
+				s.logger.Error(err, "UpdateFindingsResultFailure failed", "id", result.ID, "findings", findings)
+				return errors.Wrap(err, "UpdateFindingsResultFailure failed")
 			}
 		} else {
 			if err = s.repo.UpdateFindingsResultSuccess(ctx, result.ID); err != nil {
-				return err
+				s.logger.Error(err, "UpdateFindingsResultFailure failed", "id", result.ID)
+				return errors.Wrap(err, "UpdateFindingsResultSuccess failed")
 			}
 		}
 	}
@@ -101,10 +105,13 @@ func (s *ScanningEngine) process(ctx context.Context) error {
 func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, error) {
 	filePath := filepath.Join(wd, "tmp", result.Name)
 	if err := s.cloneRepository(filePath, result.Link); err != nil {
+		s.logger.Error(err, "clone repository failed", "url", result.Link)
 		return nil, err
 	}
 	defer func() {
-		os.RemoveAll(filePath)
+		if err := os.RemoveAll(filePath); err != nil {
+			s.logger.Error(err, "remove file failed", "filepath", filePath)
+		}
 	}()
 
 	var findings []model.Finding
