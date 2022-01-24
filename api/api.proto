@@ -129,9 +129,15 @@ message TriggerScanRepositoryResponse {
 }
 
 message ListResultRequest {
-
+  uint32 next_id = 1 [json_name = "next_id", (validate.rules).uint32 = {gte: 0}];
+  uint32 limit = 2 [json_name = "limit", (validate.rules).uint32 = {gt: 0, lte: 100}];
 }
 
 message ListResultResponse {
-
+  message Data {
+    repeated Result results = 1 [json_name = "results"];
+  }
+  google.rpc.Code code = 1 [json_name = "code"];
+  uint32 next_id = 2 [json_name = "next_id"];
+  Data data = 3 [json_name = "data"];
 }

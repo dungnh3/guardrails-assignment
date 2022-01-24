@@ -3,6 +3,8 @@ package cmd
 import (
 	"context"
 
+	"github.com/dungnh3/guardrails-assignment/internal/apps/rule"
+
 	"github.com/dungnh3/guardrails-assignment/internal/apps/job"
 	"github.com/dungnh3/guardrails-assignment/pkg/migration"
 	"github.com/spf13/cobra"
@@ -27,9 +29,11 @@ func scanningCmd() *cobra.Command {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 
+			rules := []rule.IChecked{rule.G101()}
+			scanningEngine := job.NewScanning(logger, db, rules)
+
 			// need this chan to catch error in another routine
 			errChan := make(chan error)
-			scanningEngine := job.NewScanning(cfg, db)
 			go func() {
 				if err = scanningEngine.Run(ctx); err != nil {
 					logger.Error(err, "scanning job failed")

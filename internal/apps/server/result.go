@@ -34,6 +34,29 @@ func (s *Service) TriggerScanRepository(ctx context.Context, request *api.Trigge
 }
 
 func (s *Service) ListResult(ctx context.Context, request *api.ListResultRequest) (*api.ListResultResponse, error) {
-	// TODO implement me
-	panic("implement me")
+	rs, err := s.repo.ListResult(ctx, request.NextId, int(request.Limit))
+	if err != nil {
+		return nil, err
+	}
+
+	var results []*api.Result
+	for _, r := range rs {
+		result, err := formatResultToResponse(&r)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, result)
+	}
+
+	nextId := uint32(0)
+	if len(results) != 0 {
+		nextId = rs[len(rs)-1].ID
+	}
+	return &api.ListResultResponse{
+		Code:   code.Code_OK,
+		NextId: nextId,
+		Data: &api.ListResultResponse_Data{
+			Results: results,
+		},
+	}, nil
 }

@@ -2,6 +2,8 @@ syntax = "proto3";
 package operation.olympus.service;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/any.proto";
 
 message SourceRepository {
   uint32 id = 1 [json_name = "id"];
@@ -9,4 +11,16 @@ message SourceRepository {
   string link = 3 [json_name = "link"];
   google.protobuf.Timestamp created_at = 4 [json_name = "created_at"];
   google.protobuf.Timestamp updated_at = 5 [json_name = "updated_at"];
+}
+
+message Result {
+  uint32 id = 1 [json_name = "id"];
+  uint32 source_repository_id = 2 [json_name = "source_repository_id"];
+  string name = 3 [json_name = "name"];
+  string link = 4 [json_name = "link"];
+  string status = 5 [json_name = "status"];
+  repeated google.protobuf.Struct findings = 6 [json_name = "findings"];
+  google.protobuf.Timestamp queued_at = 7 [json_name = "queued_at"];
+  google.protobuf.Timestamp scanning_at = 8 [json_name = "scanning_at"];
+  google.protobuf.Timestamp finished_at = 9 [json_name = "finished_at"];
 }

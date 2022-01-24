@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/dungnh3/guardrails-assignment/internal/apps/rule"
+)
 
 type ScanningStatus string
 
@@ -22,3 +26,23 @@ type Result struct {
 	ScanningAt         *time.Time
 	FinishedAt         *time.Time
 }
+
+type (
+	Begin struct {
+		Line int `json:"line"`
+	}
+
+	Positions struct {
+		Begin Begin `json:"begin"`
+	}
+
+	Location struct {
+		Path      string    `json:"path"`
+		Positions Positions `json:"positions"`
+	}
+
+	Finding struct {
+		*rule.Rule
+		Location Location `json:"location"`
+	}
+)
