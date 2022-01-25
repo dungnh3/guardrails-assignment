@@ -10,8 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/pkg/errors"
 
 	"github.com/dungnh3/guardrails-assignment/internal/apps/rule"
@@ -72,11 +70,6 @@ func (s *ScanningEngine) Close(ctx context.Context) error {
 }
 
 func (s *ScanningEngine) process(ctx context.Context) error {
-	wd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
 	results, err := s.repo.GetQueuedTriggerRepository(ctx, processBatch)
 	if err != nil && err != repository.ErrRecordNotFound {
 		return err
@@ -84,7 +77,7 @@ func (s *ScanningEngine) process(ctx context.Context) error {
 	s.logger.Info(fmt.Sprintf("process scan repositories [%v]", len(results)))
 
 	for _, result := range results {
-		findings, err := s.scan(wd, result)
+		findings, err := s.scan(result)
 		if err != nil {
 			return err
 		}
@@ -104,22 +97,24 @@ func (s *ScanningEngine) process(ctx context.Context) error {
 	return nil
 }
 
-func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, error) {
-	filename := fmt.Sprintf("%v-%v", result.Name, uuid.New())
-	filePath := filepath.Join(wd, "tmp", filename)
-	if err := s.cloneRepository(filePath, result.Link); err != nil {
+func (s *ScanningEngine) scan(result model.Result) ([]model.Finding, error) {
+	dir, err := os.MkdirTemp("", "scan")
+	if err != nil {
+		return nil, err
+	}
+
+	if err := s.cloneRepository(dir, result.Link); err != nil {
 		s.logger.Error(err, "clone repository failed", "url", result.Link)
 		return nil, err
 	}
 	defer func() {
-		if err := os.RemoveAll(filePath); err != nil {
-			s.logger.Error(err, "remove file failed", "filepath", filePath)
+		if err := os.RemoveAll(dir); err != nil {
+			s.logger.Error(err, "remove file failed", "dir", dir)
 		}
 	}()
 
 	var findings []model.Finding
-	pathRoot := filepath.Join("tmp", filename)
-	if err := filepath.Walk(pathRoot, func(path string, info fs.FileInfo, err error) error {
+	if err := filepath.Walk(dir, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -150,7 +145,7 @@ func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, 
 						Metadata: r.Metadata,
 						Location: model.Location{
 							Path: func() string {
-								fp := strings.Replace(path, pathRoot, "", 1)
+								fp := strings.Replace(path, dir, "", 1)
 								return strings.Replace(fp, "/", "", 1)
 							}(),
 							Positions: model.Positions{

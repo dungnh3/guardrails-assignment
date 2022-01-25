@@ -7,7 +7,6 @@ import (
 
 	"github.com/pkg/errors"
 
-	"google.golang.org/protobuf/types/known/structpb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
@@ -46,21 +45,4 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 		return "JSONB"
 	}
 	return ""
-}
-
-func (j JSON) ConvertToStructPb() (*structpb.Struct, error) {
-	if j == nil {
-		return nil, nil
-	}
-
-	m := make(map[string]interface{})
-	if err := json.Unmarshal(j, &m); err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("unmarshal json failed, value: %v", string(j)))
-	}
-
-	data, err := structpb.NewStruct(m)
-	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("convert to struct pb failed, value: %v", m))
-	}
-	return data, nil
 }

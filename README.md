@@ -1,5 +1,15 @@
 # guardrails-assignment
 
+## Prerequisites
+Before you continue, ensure you meet the following requirements:
+
+### Dependencies
+```sh
+- Docker
+- Go 1.17
+- PostgreSQL 12
+```
+
 ## Create instance database
 ```sh
 make init-db

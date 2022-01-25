@@ -1,4 +1,12 @@
 PKGS = $(shell go list ./... | grep -v /test | grep -v /mocks)
+BIN_FOLDER = bin
+SERVER = rpc-runtime
+GO_CMD_RUNTIME = main.go
+
+build:
+	GOSUMDB=off go mod tidy
+	go build -o $(BIN_FOLDER)/$(SERVER) $(GO_CMD_RUNTIME)
+.PHONY: build
 
 init-db:
 	docker run --rm -d --name guarddb -p 5432:5432 \
@@ -36,3 +44,6 @@ mock:
 	go get -u github.com/vektra/mockery/.../
 	cd internal && mockery -all -inpkg -keeptree --case underscore && cd ..
 .PHONY: mock
+
+build-docker:
+	docker build -t guardrails --build-arg GITHUB_TOKEN --force-rm -f Dockerfile .
