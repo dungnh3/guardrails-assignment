@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    container_name: guard_db
+    ports:
+      - "5433:5432"
+    networks:
+      - guardrails-network
+    environment:
+      POSTGRES_DB: "guard_db"
+      POSTGRES_USER: "guardrails"
+      POSTGRES_PASSWORD: "secret"
+
+  server:
+    image: guardrails
+    restart: always
+    container_name: guard_server
+    ports:
+      - "10080:10080"
+    networks:
+      - guardrails-network
+    depends_on:
+      - postgres
+    command:
+      - server
+    environment:
+      POSTGRESQL__HOST: postgres
+
+  scanner:
+    image: guardrails
+    restart: always
+    container_name: guard_scanner
+    networks:
+      - guardrails-network
+    depends_on:
+      - postgres
+    command:
+      - scanner
+    environment:
+      POSTGRESQL__HOST: postgres
+
+networks:
+  guardrails-network:
+    driver: bridge

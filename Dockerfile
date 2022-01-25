@@ -9,7 +9,7 @@ FROM gcr.io/distroless/base
 COPY --from=build-env /build/bin ./
 COPY --from=build-env /build/config ./config
 COPY --from=build-env /build/docs ./docs
-COPY --from=build-env /build/tmp ./tmp
+COPY --from=build-env /build/db/migrations ./db/migrations
 
 ENTRYPOINT ["./rpc-runtime"]
 CMD ["server"]
