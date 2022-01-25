@@ -12,6 +12,10 @@ init-test-db:
  		postgres:12-alpine
 .PHONY: init-test-db
 
+stop-test-db:
+	docker stop guarddb_test
+.PHONY: stop-test-db
+
 lint:
 	golint $(PKGS)
 .PHONY: lint
@@ -19,6 +23,13 @@ lint:
 test-unit:
 	GIN_MODE=release go test --race -count=1 --cover -v $(PKGS)
 .PHONY: test-unit
+
+test-integration:
+	DATABASE__NAME=guard_db DATABASE__PORT=5433 go test --race -v -count=1 ./test/...
+.PHONY: test-integration
+
+run-test-integration: init-test-db test-integration stop-test-db
+.PHONY: run-test-integration
 
 mock:
 	go get -u github.com/stretchr/testify/mock

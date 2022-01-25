@@ -1,5 +1,21 @@
 # guardrails-assignment
 
+## Create instance database
+```sh
+make init-db
+```
+
+## Start server
+Default server always start in `port: 10080`. Please change configure in `/config/default.go` if you want to start with new port
+```sh
+go run cmd/main.go server
+```
+
+## Start scanner job
+```sh
+go run cmd/main.go scanner
+```
+
 ## Installation buf
 The following instructions assume you are using [Buf Docs Installation](https://docs.buf.build/installation)
 ```sh
@@ -55,15 +71,4 @@ Alternatively, see the section on remotely managed plugin versions below.
 
 ```sh
 buf generate
-```
-
-## Start service
-Default server always start in `port: 10080`. Please change configure in `/config/default.go` if you want to start with new port
-```sh
-go run cmd/main.go server
-```
-
-## Start background job to scan
-```sh
-go run cmd/main.go scanning
 ```

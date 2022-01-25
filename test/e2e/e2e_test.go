@@ -1,6 +1,7 @@
 package e2e
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 	"syscall"
@@ -32,8 +33,9 @@ var (
 
 type e2eTestSuite struct {
 	suite.Suite
-	db  *gorm.DB
-	svc *server.Service
+	db    *gorm.DB
+	sqlDB *sql.DB
+	svc   *server.Service
 }
 
 func TestE2ETestSuite(t *testing.T) {
@@ -59,12 +61,13 @@ func (s *e2eTestSuite) SetupSuite() {
 		grpc_middleware.WithUnaryServerChain(grpcMiddlewareUnary...),
 	)
 
+	cfg.PostgreSQL.Port = 5433
 	s.db = cfg.PostgreSQL.ConnectDatabase()
 
-	sqlDB, err := s.db.DB()
+	s.sqlDB, err = s.db.DB()
 	s.Require().NoError(err)
 
-	err = migration.Up(sqlDB, migrationPath)
+	err = migration.Up(s.sqlDB, migrationPath)
 	s.Require().NoError(err)
 
 	svc, err := server.NewService(cfg, s.db)
@@ -82,8 +85,8 @@ func (s *e2eTestSuite) TearDownSuite() {
 	err = s.svc.Close()
 	s.Require().NoError(err)
 
-	// err = migration.Down(s.sqlDB, migrationPath)
-	// s.Require().NoError(err)
+	err = migration.Down(s.sqlDB, migrationPath)
+	s.Require().NoError(err)
 
 	p, _ := os.FindProcess(syscall.Getpid())
 	p.Signal(syscall.SIGINT)

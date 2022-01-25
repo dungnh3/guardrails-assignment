@@ -12,7 +12,7 @@ import (
 
 func scanningCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "scanning",
+		Use:   "scanner",
 		Short: "start scanning engine",
 		Run: func(*cobra.Command, []string) {
 			db := cfg.PostgreSQL.ConnectDatabase()
