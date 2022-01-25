@@ -20,6 +20,10 @@ Default server always start in `port: 10080`. Please change configure in `/confi
 ```sh
 go run cmd/main.go server
 ```
+### Document swagger
+```sh
+http://localhost:10080/swagger-ui
+```
 
 ## Start scanner job
 ```sh
