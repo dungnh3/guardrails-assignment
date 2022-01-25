@@ -30,19 +30,19 @@ func scanningCmd() *cobra.Command {
 			defer cancel()
 
 			rules := []rule.Rule{rule.G101}
-			scanningEngine := job.NewScanning(logger, db, rules...)
+			scannerEngine := job.NewScanner(logger, db, rules...)
 
 			// need this chan to catch error in another routine
 			errChan := make(chan error)
 			go func() {
-				if err = scanningEngine.Run(ctx); err != nil {
+				if err = scannerEngine.Run(ctx); err != nil {
 					logger.Error(err, "scanning job failed")
 					errChan <- err
 				}
 			}()
 
 			handleExitSignal(errChan)
-			if err = scanningEngine.Close(ctx); err != nil {
+			if err = scannerEngine.Close(ctx); err != nil {
 				logger.Error(err, "exception error when shutting down scanning engine")
 			}
 		},

@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/pkg/errors"
 
 	"github.com/dungnh3/guardrails-assignment/internal/apps/rule"
@@ -34,7 +36,7 @@ type ScanningEngine struct {
 	rules  []rule.Rule
 }
 
-func NewScanning(logger logr.Logger, db *gorm.DB, rules ...rule.Rule) *ScanningEngine {
+func NewScanner(logger logr.Logger, db *gorm.DB, rules ...rule.Rule) *ScanningEngine {
 	logger = logger.WithName("guardrails-scanning-jobs")
 	repo := repository.New(db, logger)
 	return &ScanningEngine{
@@ -103,7 +105,8 @@ func (s *ScanningEngine) process(ctx context.Context) error {
 }
 
 func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, error) {
-	filePath := filepath.Join(wd, "tmp", result.Name)
+	filename := fmt.Sprintf("%v-%v", result.Name, uuid.New())
+	filePath := filepath.Join(wd, "tmp", filename)
 	if err := s.cloneRepository(filePath, result.Link); err != nil {
 		s.logger.Error(err, "clone repository failed", "url", result.Link)
 		return nil, err
@@ -115,7 +118,7 @@ func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, 
 	}()
 
 	var findings []model.Finding
-	pathRoot := filepath.Join("tmp", result.Name)
+	pathRoot := filepath.Join("tmp", filename)
 	if err := filepath.Walk(pathRoot, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -128,6 +131,7 @@ func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, 
 		if err != nil {
 			return err
 		}
+
 		scanner := bufio.NewScanner(file)
 		scanner.Split(bufio.ScanLines)
 
@@ -135,17 +139,20 @@ func (s *ScanningEngine) scan(wd string, result model.Result) ([]model.Finding, 
 		for scanner.Scan() {
 			counter++
 			for _, r := range s.rules {
-				ok, err := r.DetectFn(scanner.Text())
+				isErrDetect, err := r.DetectFn(scanner.Text())
 				if err != nil {
 					return err
 				}
-				if ok {
+				if isErrDetect {
 					findings = append(findings, model.Finding{
 						Type:     r.Type,
 						RuleId:   r.RuleId,
 						Metadata: r.Metadata,
 						Location: model.Location{
-							Path: strings.Replace(path, pathRoot, "", 1),
+							Path: func() string {
+								fp := strings.Replace(path, pathRoot, "", 1)
+								return strings.Replace(fp, "/", "", 1)
+							}(),
 							Positions: model.Positions{
 								Begin: model.Begin{
 									Line: counter,
