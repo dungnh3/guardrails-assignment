@@ -13,7 +13,7 @@ func (s *Service) TriggerScanRepository(ctx context.Context, request *api.Trigge
 	timeoutCtx, cancel := defaultTimeoutContext(ctx)
 	defer cancel()
 
-	repo, err := s.repo.GetSourceRepositoryById(timeoutCtx, request.RepoId)
+	repo, err := s.repo.GetSourceRepositoryById(timeoutCtx, request.Id)
 	if err != nil {
 		return nil, err
 	}

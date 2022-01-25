@@ -174,7 +174,7 @@
         ]
       }
     },
-    "/api/v1/repositories/{repo_id}/scans": {
+    "/api/v1/repositories/{id}/scans": {
       "post": {
         "operationId": "GuardRailsService_TriggerScanRepository",
         "responses": {
@@ -193,7 +193,7 @@
         },
         "parameters": [
           {
-            "name": "repo_id",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",

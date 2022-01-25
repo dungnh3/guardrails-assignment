@@ -1310,9 +1310,9 @@ func (m *TriggerScanRepositoryRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetRepoId() <= 0 {
+	if m.GetId() <= 0 {
 		err := TriggerScanRepositoryRequestValidationError{
-			field:  "RepoId",
+			field:  "Id",
 			reason: "value must be greater than 0",
 		}
 		if !all {

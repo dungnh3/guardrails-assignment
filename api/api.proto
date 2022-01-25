@@ -46,7 +46,7 @@ service GuardRailsService {
 
   rpc TriggerScanRepository(TriggerScanRepositoryRequest) returns (TriggerScanRepositoryResponse) {
     option (google.api.http) = {
-      post: "/api/v1/repositories/{repo_id}/scans",
+      post: "/api/v1/repositories/{id}/scans",
     };
   }
 
@@ -119,7 +119,7 @@ message RemoveRepositoryResponse {
 }
 
 message TriggerScanRepositoryRequest {
-  uint32 repo_id = 1 [json_name = "repo_id", (validate.rules).uint32 = {gt: 0}];
+  uint32 id = 1 [json_name = "id", (validate.rules).uint32 = {gt: 0}];
 }
 
 message TriggerScanRepositoryResponse {
